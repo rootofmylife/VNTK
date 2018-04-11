@@ -10,64 +10,86 @@ class vntk(object):
         for (fileid, value) in enumerate(wordlists.fileids()): # fileids([categories])
            print('text' + str(fileid) + ': ' + str(value))
 
-    def open_corpus(path_corpus):
-        cp = open(path_corpus, 'r', encoding='utf-8').read()
-        return cp
+    def open_corpus(self, path_corpus):
+        mess = open(path_corpus, 'r', encoding='utf-8').read()
+        token = nltk.word_tokenize(mess)
+        corpus = nltk.Text(token)
+        return corpus
 
-# có thể thay "corpus" = tên của 1 data, vd: nguyen_nhat_anh
-class Corpus(object):
-    def __init__(self, corpus):
-        # từ đã được tokenized
-        token = nltk.word_tokenize(corpus)
-        self.corpus = nltk.Text(token)
+# vntk.vnnews.raws()
+# vntk.vnnews.words()
+class vnnews:
+    def __init__(self):
+        self.name_corpus = []
+        wordlists = PlaintextCorpusReader('./VTB_utf8/', '.*')
+        for (fileid, value) in enumerate(wordlists.fileids()): # fileids([categories])
+           self.name_corpus.append(str(value))
 
-    # tìm những khúc chứa những từ này
-    def concordance(self, key):
-        print(self.corpus.concordance(key))
+    def fileids(self):
+        return self.name_corpus
 
-    # tìm những câu có cùng ngữ cảnh với từ này, giống y hệt
-    def similar(self, key):
-        print(self.corpus.similar(key))
+    def raws(self, file_id = ''):
+        if len(file_id) == 0:
+            words = []
+            str_raw = ''
+            for i in self.name_corpus:
+                corpus = open('./VTB_utf8/' + i, 'r', encoding='utf-8').read()
+                temp = corpus.split()
+                temp2 = [s.split('/')[0] for s in temp]
+                str_raw += ' '.join(temp2) + '\n'
+            return str_raw
+        else:
+            corpus = open('./VTB_utf8/' + file_id, 'r', encoding='utf-8').read()
+            temp = corpus.split()
+            temp2 = [s.split('/')[0] for s in temp]
+            return ' '.join(temp2)
 
-    # examine just the contexts that are shared by two or more words
-    def common_contexts(self, key1, key2):
-        print(self.corpus.common_contexts(key1, key2))
+    def words(self, file_id = ''):
+        if len(file_id) == 0:
+            words = []
+            for i in self.name_corpus:
+                corpus = open('./VTB_utf8/' + i, 'r', encoding='utf-8').read()
+                temp = corpus.split()
+                temp2 = [s.split('/')[0] for s in temp]
+                for k in temp2:
+                    words.append(k)
+            return nltk.Text(words)
+        else:
+            corpus = open('./VTB_utf8/' + file_id, 'r', encoding='utf-8').read()
+            temp = corpus.split()
+            words.append([s.split('/')[0] for s in temp])
+            return nltk.Text(words)
 
-    def count_token(self):
-        return len(self.corpus)
+    def tagged_words(self, file_id = ''):
+        if len(file_id) == 0:
+            words = []
+            for i in self.name_corpus:
+                corpus = open('./VTB_utf8/' + i, 'r', encoding='utf-8').read()
+                temp = corpus.split()
+                temp2 = [(s.split('/')[0], s.split('/')[1]) for s in temp]
+                for k in temp2:
+                    words.append(k)
+            return words
+        else:
+            corpus = open('./VTB_utf8/' + file_id, 'r', encoding='utf-8').read()
+            temp = corpus.split()
+            words.append([(s.split('/')[0], s.split('/')[1]) for s in temp])
+            return words
 
-    def count_1_token(self):
-        return len(set(self.corpus))
+class pos_tag:
+    pass
 
-    # đếm số lần xuất hiện
-    def count(self, key):
-        return self.corpus.count(key)
+class sent_tokenize:
+    pass
 
-    def sents(self):
-        return nltk.sent_tokenize(self.corpus)
+# # làm dựa trên corpus hiện có
+class NER:
+    pass
 
-    def words(self):
-        return nltk.word_tokennize(self.corpus)
-        
+# chắc k làm, có làm thì dựa trên corpus hiện có
+class word_tokenize:
+    pass
 
-class Analysis(object):
-    def __init__(self, corpus):
-        # từ đã được tokenized
-        token = nltk.word_tokenize(corpus)
-        self.corpus = nltk.Text(token)
-
-    # trả về từ điển tần số xuất hiện của 1 từ
-    def freq_dict(self):
-        return nltk.FreqDist(self.corpus)
-
-    def max_freq(self):
-        return nltk.FreqDist(self.corpus).max()
-
-    def one_freq(self):
-        print(nltk.FreqDist(self.corpus).hapaxes())
-
-    def collocation(self):
-        print(self.corpus.collocations())
-
-    def bigram(sentence):
-        return nltk.bigrams(sentence)
+# làm dựa trên corpus hiện có
+class chunking:
+    pass
