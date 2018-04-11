@@ -1,21 +1,6 @@
 import nltk
 from nltk.corpus import PlaintextCorpusReader
 
-class vntk(object):
-    def __init__(self, path):
-        self.path = path
-
-    def load_corpus(self):
-        wordlists = PlaintextCorpusReader(self.path, '.*')
-        for (fileid, value) in enumerate(wordlists.fileids()): # fileids([categories])
-           print('text' + str(fileid) + ': ' + str(value))
-
-    def open_corpus(self, path_corpus):
-        mess = open(path_corpus, 'r', encoding='utf-8').read()
-        token = nltk.word_tokenize(mess)
-        corpus = nltk.Text(token)
-        return corpus
-
 # vntk.vnnews.raws()
 # vntk.vnnews.words()
 class vnnews:

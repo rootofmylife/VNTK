@@ -1,8 +1,9 @@
 from vntk import vnnews
 
-# test = vnnews()
+test = vnnews()
+print(test)
 
-print(vnnews().raws())
+# print(vnnews().raws())
 # print(vnnews().fileids())
 # print(test.words())
 # print(test.tagged_words())
