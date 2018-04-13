@@ -1,16 +1,20 @@
 import nltk
 from nltk.corpus import PlaintextCorpusReader
 
-# vntk.vnnews.raws()
-# vntk.vnnews.words()
 class vnnews:
-    def __init__(self):
+    def __init__(self, file_path):
         self.name_corpus = []
-        wordlists = PlaintextCorpusReader('./VTB_utf8/', '.*')
+        self.file_path = file_path
+        wordlists = PlaintextCorpusReader(file_path, '.*')
         for (fileid, value) in enumerate(wordlists.fileids()): # fileids([categories])
            self.name_corpus.append(str(value))
+        pass
 
     def fileids(self):
+        self.name_corpus = []
+        wordlists = PlaintextCorpusReader(self.file_path, '.*')
+        for (fileid, value) in enumerate(wordlists.fileids()): # fileids([categories])
+           self.name_corpus.append(str(value))
         return self.name_corpus
 
     def raws(self, file_id = ''):
@@ -18,13 +22,13 @@ class vnnews:
             words = []
             str_raw = ''
             for i in self.name_corpus:
-                corpus = open('./VTB_utf8/' + i, 'r', encoding='utf-8').read()
+                corpus = open(self.file_path+ i, 'r', encoding='utf-8').read()
                 temp = corpus.split()
                 temp2 = [s.split('/')[0] for s in temp]
                 str_raw += ' '.join(temp2) + '\n'
             return str_raw
         else:
-            corpus = open('./VTB_utf8/' + file_id, 'r', encoding='utf-8').read()
+            corpus = open(self.file_path + file_id, 'r', encoding='utf-8').read()
             temp = corpus.split()
             temp2 = [s.split('/')[0] for s in temp]
             return ' '.join(temp2)
@@ -33,30 +37,30 @@ class vnnews:
         if len(file_id) == 0:
             words = []
             for i in self.name_corpus:
-                corpus = open('./VTB_utf8/' + i, 'r', encoding='utf-8').read()
+                corpus = open(self.file_path + i, 'r', encoding='utf-8').read()
                 temp = corpus.split()
                 temp2 = [s.split('/')[0] for s in temp]
                 for k in temp2:
                     words.append(k)
-            return nltk.Text(words)
+            return words
         else:
-            corpus = open('./VTB_utf8/' + file_id, 'r', encoding='utf-8').read()
+            corpus = open(self.file_path + file_id, 'r', encoding='utf-8').read()
             temp = corpus.split()
             words.append([s.split('/')[0] for s in temp])
-            return nltk.Text(words)
+            return words
 
     def tagged_words(self, file_id = ''):
         if len(file_id) == 0:
             words = []
             for i in self.name_corpus:
-                corpus = open('./VTB_utf8/' + i, 'r', encoding='utf-8').read()
+                corpus = open(self.file_path + i, 'r', encoding='utf-8').read()
                 temp = corpus.split()
                 temp2 = [(s.split('/')[0], s.split('/')[1]) for s in temp]
                 for k in temp2:
                     words.append(k)
             return words
         else:
-            corpus = open('./VTB_utf8/' + file_id, 'r', encoding='utf-8').read()
+            corpus = open(self.file_path + file_id, 'r', encoding='utf-8').read()
             temp = corpus.split()
             words.append([(s.split('/')[0], s.split('/')[1]) for s in temp])
             return words
