@@ -1,5 +1,6 @@
 import nltk
 from nltk.corpus import PlaintextCorpusReader
+from cPickle import dump, load
 
 class vnnews:
     def __init__(self, file_path):
@@ -66,19 +67,27 @@ class vnnews:
             return words
 
 class pos_tag:
-    pass
+    def __init__(self):
+        input = open('POStagger.pkl', 'rb')
+        self.tagger = load(input)
+        input.close()
+    
+    # sentence = ['asd', 'ert']
+    def pos(self, sentence):
+        return self.tagger.tag(sentence)
+
 
 class sent_tokenize:
-    pass
+    def __init__(self):
+        pass
+    
+    def sent_segment(self, doc):
+        return nltk.sent_tokenize(doc)
 
-# # làm dựa trên corpus hiện có
-class NER:
-    pass
-
-# chắc k làm, có làm thì dựa trên corpus hiện có
 class word_tokenize:
-    pass
-
-# làm dựa trên corpus hiện có
-class chunking:
-    pass
+    def __init__(self):
+        pass
+        
+    # chắc dùng pyvi
+    def word_segment(self, sent):
+        return nltk.word_tokenize(sent)
